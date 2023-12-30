@@ -1,0 +1,63 @@
+.card-auth {
+    padding: 25px;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.radio .checked {
+    position: absolute;
+    margin-left: 43px;
+    width: 50px;
+}
+
+.radio-checked .checked {
+    display: block !important;
+    visibility: visible !important;
+}
+
+label > .tutorsiswa {
+    visibility: hidden;
+    position: absolute;
+}
+
+label > .tutorsiswa + .card-input {
+    cursor: pointer;
+}
+
+label > .tutorsiswa:checked + .card-input {
+    border: 2px solid #FA7E50;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+.check-image{
+    display: none;
+}
+
+label > .check-image:checked{
+    display: block;
+}
+
+.card-input {
+    border: 1px solid #AEC5DE;
+    padding: 30px;
+    border-radius: 30px;
+}
+
+@media(min-width : 992px){
+    .radio .checked {
+        position: absolute;
+        margin-left: 100px;
+        width: 60px;
+    }
+}

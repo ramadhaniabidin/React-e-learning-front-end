@@ -1,0 +1,64 @@
+input[type="checkbox"]{
+    display: none;
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+/* .custom-checkbox{
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+} */
+
+
+.my-sign-in-image{
+    height: 100%;
+    width: auto;
+    padding-bottom: 1%;
+    border-radius: 10px;
+    border: 2px solid #ece7e7;
+}
+
+/* .custom-checkbox input[type="radio"]:checked + .my-sign-in-image{
+    background-color: #dd1515 !important;
+    opacity: 0.9;
+    font-size: 1.2em;
+} */
+
+.card {
+    border: 1px solid #AEC5DE;
+    padding: 20px;
+    border-radius: 30px;
+}
+
+label > .custom-checkbox {
+    visibility: hidden;
+    position: absolute;
+}
+
+label > .custom-checkbox + .card{
+    cursor: pointer;
+}
+
+label > .custom-checkbox:checked + .card{
+    border: 2px solid #FA7E50;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+.radio .checked {
+    position: absolute;
+    margin-left: 43px;
+    width: 50px;
+}
+
+@media(min-width : 992px){
+    .radio .checked {
+        position: absolute;
+        margin-left: 100px;
+        width: 60px;
+    }
+}
