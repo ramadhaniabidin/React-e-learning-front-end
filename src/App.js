@@ -3,6 +3,7 @@ import LoginPage from "./components/LoginPage";
 import Register from "./components/Register";
 import Activation from "./components/Activation";
 import LatisLogin from "./components/LatisLogin";
+import CallAPI from "./components/CallAPI";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/Register" Component={Register}></Route>
         <Route path="/Activation" Component={Activation}></Route>
         <Route path="/LatisLogin" Component={LatisLogin}></Route>
+        <Route path="/CallAPI" Component={CallAPI}></Route>
       </Routes>
     </Router>
   );
