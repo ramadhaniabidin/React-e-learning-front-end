@@ -1,16 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../font-awesome/css/fontawesome.css';
 import '../font-awesome/css/solid.css'
 import '../styling/LoginPage.css';
 import { Link } from "react-router-dom";
+import { data } from "jquery";
 
-function testFunction () { 
+function testFunction() {
     console.log("Test console log");
 }
 
+const LoginAction = () => {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    // const param = {
+    //     model: {
+    //         'username': username.toString(),
+    //         'password': password.toString()
+    //     }
+    // };
+    const model = {
+        'username': username.toString(),
+        'password': password.toString()
+    }
+    console.log("username : ", username);
+    console.log("Password : ", password);
+    //console.log("Params = ", param.model)
+    //const [jsonData, setJsonData] = useState(0);
+    const endPoint = "https://localhost:7215/React-Backend/Akun/Login";
+    const fetchData = async () => {
+        const result = await fetch(endPoint, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(model)
+        });
+
+        // result.json().then(data => {
+        //     console.log("Data = ", data);
+        // });
+
+        const data = await result.json();
+        console.log("data = ", data);
+    }
+
+    fetchData();
+};
+
 const LoginPage = () => {
-    return(
+    return (
         <div className="container">
             <div className="row">
                 <div className="col-lg-3 col-md-2"></div>
@@ -29,25 +68,25 @@ const LoginPage = () => {
                             <form>
                                 <div className="form-group">
                                     <label className="form-control-label">USERNAME/EMAIL</label>
-                                    <input type="text" className="form-control"></input>
+                                    <input type="text" className="form-control" id="username"></input>
                                 </div>
                                 <div className="form-group">
                                     <label className="form-control-label">PASSWORD</label>
-                                    <input type="password" className="form-control"></input>
+                                    <input type="password" className="form-control" id="password"></input>
                                 </div>
-                                <div className="form-group" style={{alignContent: "right"}}>
+                                <div className="form-group" style={{ alignContent: "right" }}>
                                     <div className="row">
                                         <div className="col-md-8">
-                                           <Link to="Register">
+                                            <Link to="Register">
                                                 Don't have an account? Click Here..
-                                           </Link>
+                                            </Link>
                                         </div>
                                         <div className="col-md-4">
-                                            <button type="button" className="btn btn-primary float-end" onClick={testFunction}>
+                                            <button type="button" className="btn btn-primary float-end" onClick={LoginAction}>
                                                 LOGIN
                                             </button>
                                         </div>
-                                    </div>                     
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -56,7 +95,7 @@ const LoginPage = () => {
 
                 <div className="col-lg-3 col-md-2"></div>
             </div>
-        </div>      
-    )    
+        </div>
+    )
 }
 export default LoginPage;
