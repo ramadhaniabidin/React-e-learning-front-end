@@ -4,51 +4,82 @@ import '../font-awesome/css/fontawesome.css';
 import '../font-awesome/css/solid.css'
 import '../styling/LoginPage.css';
 import { Link } from "react-router-dom";
-import { data } from "jquery";
+import $ from 'jquery';
+import { LoadingToast, Success } from "./LoadingToast";
+import Cookies from 'js-cookie';
 
-function testFunction() {
-    console.log("Test console log");
-}
 
-const LoginAction = () => {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    // const param = {
-    //     model: {
-    //         'username': username.toString(),
-    //         'password': password.toString()
-    //     }
-    // };
-    const model = {
-        'username': username.toString(),
-        'password': password.toString()
-    }
-    console.log("username : ", username);
-    console.log("Password : ", password);
-    //console.log("Params = ", param.model)
-    //const [jsonData, setJsonData] = useState(0);
-    const endPoint = "https://localhost:7215/React-Backend/Akun/Login";
-    const fetchData = async () => {
-        const result = await fetch(endPoint, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            },
-            body: JSON.stringify(model)
-        });
 
-        // result.json().then(data => {
-        //     console.log("Data = ", data);
-        // });
 
-        const data = await result.json();
-        console.log("data = ", data);
-    }
 
-    fetchData();
-};
 
 const LoginPage = () => {
+    const [accountData, setAccountData] = useState(null);
+    const [toast, setToast] = useState(null);
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    useEffect(() => {
+        const isInvalid = !userName.trim() || !password.trim();
+        setIsButtonDisabled(isInvalid);
+    }, [userName, password]);
+
+    const handleUsername = (event) => {
+        setUserName(event.target.value);
+    };
+
+    const handlePassword = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const LoginAction = () => {
+        const model = {
+            'username': userName.toString(),
+            'password': password.toString()
+        };
+
+        showToast('Loading', 'info');
+        const endPoint = "https://localhost:7215/React-Backend/Akun/Login";
+        const fetchData = async () => {
+            const result = await fetch(endPoint, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify(model)
+            });
+            let jsonData = await result.json();
+            if(jsonData){
+                localStorage.setItem('Token', jsonData.Token);
+                sessionStorage.setItem('Token', jsonData.Token);
+                Cookies.set('Token', jsonData.Token, {expires: 1});
+                if('caches' in window){
+                    caches.open('my-cache').then((cache) =>{
+                        cache.put('Token', new Response(jsonData.Token));
+                    });
+                }
+                setTimeout(() => {
+                    showToast('Success', 'suc');
+                }, 2000);
+            }
+        }
+        fetchData();
+    };
+
+
+    const showToast = (message, type) => {
+        setToast({ message, type });
+    };
+
+    const MakeAPIRequest = () => {
+        showToast('Making API request...', 'info');
+
+        setTimeout(() => {
+            showToast('Success', 'suc');
+        }, 2000);
+    };
+
     return (
         <div className="container">
             <div className="row">
@@ -68,11 +99,11 @@ const LoginPage = () => {
                             <form>
                                 <div className="form-group">
                                     <label className="form-control-label">USERNAME/EMAIL</label>
-                                    <input type="text" className="form-control" id="username"></input>
+                                    <input type="text" className="form-control" id="username" value={userName} onChange={handleUsername}></input>
                                 </div>
                                 <div className="form-group">
                                     <label className="form-control-label">PASSWORD</label>
-                                    <input type="password" className="form-control" id="password"></input>
+                                    <input type="password" className="form-control" id="password" value={password} onChange={handlePassword}></input>
                                 </div>
                                 <div className="form-group" style={{ alignContent: "right" }}>
                                     <div className="row">
@@ -82,7 +113,8 @@ const LoginPage = () => {
                                             </Link>
                                         </div>
                                         <div className="col-md-4">
-                                            <button type="button" className="btn btn-primary float-end" onClick={LoginAction}>
+                                            <button id="login-btn" type="button" className={`btn btn-primary float-end ${isButtonDisabled ? 'disabled' : ''}`}
+                                                disabled={isButtonDisabled} onClick={LoginAction}>
                                                 LOGIN
                                             </button>
                                         </div>
@@ -95,6 +127,16 @@ const LoginPage = () => {
 
                 <div className="col-lg-3 col-md-2"></div>
             </div>
+            {
+                (toast && toast.type === "info") && (
+                    <LoadingToast toast={toast} setToast={setToast}></LoadingToast>
+                )
+            }
+            {
+                (toast && toast.type === "suc") && (
+                    <Success toast={toast} setToast={setToast}></Success>
+                )
+            }
         </div>
     )
 }

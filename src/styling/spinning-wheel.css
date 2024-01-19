@@ -1,0 +1,50 @@
+.body-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.loader-container {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    width: 20%;
+    margin-top: 1%;
+    margin-left: 1%;
+    padding: 1%;
+    border-radius: 30px;
+    
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+}
+
+
+@keyframes spin {
+    0%{transform: rotate(0deg);}
+    100%{transform: rotate(360deg);}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
